@@ -40,7 +40,7 @@ nano /etc/hosts
     127.0.0.1	localhost
     ::1 	localhost
     127.0.1.1	myhostname.localdomain	myhostname
-pacman -S netctl
+pacman -S netctl dhcpcd
 
 passwd # set the root passwd
 
@@ -67,3 +67,5 @@ passwd <username>
 pacman -Syu <package names> # installs packages, updates the existing ones and refreshes repository
 pacman -Qq # lists all packages on system
 pacman -Qqe # lists explicitly (manually) installed packages 
+
+pacman -Syu vi nano sudo netctl polkit
