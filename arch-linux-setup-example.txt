@@ -61,6 +61,10 @@ umount -R /mnt
 shutdown now # or reboot
 # remove installation media
 
+---
+
 adduser <username> -r -m # -r creates system user, -m creates home dir
 passwd <username>
-pacman -Syu sudo git
+pacman -Syu <package names> # installs packages, updates the existing ones and refreshes repository
+pacman -Qq # lists all packages on system
+pacman -Qqe # lists explicitly (manually) installed packages 
