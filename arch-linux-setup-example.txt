@@ -1,0 +1,66 @@
+loadkeys uk
+ls /sys/firmware/efi/efivars # if this does not exist then you are in BIOS mode
+
+ip link # check your network interface is enabled
+dhcpcd enp0s3 # where enp0s3 is the network interface
+# test the network connection w/ ping command
+
+timedatectl set-ntp true # enable time synchronisation
+timedatectl set-timezone Europe/London
+timedatectl status
+
+fdisk -l
+fdisk /dev/sda
+    # example partition table layout for a 20GB hard disk:
+    g  # create a new empty GPT partition table
+    n 1 2048 4096 (1 MiB)
+    t 1 4 (BIOS Boot)
+    n 2 6144 41949184 (20 MiB)
+    t 2 24 (Linux root (x86-64))
+    n 3 41951232 50331614 (4 GiB)
+    t 3 19 (Linux swap)
+    w # save changes
+mkfs.ext4 /dev/sdX2
+mkswap /dev/sda3
+
+mount /dev/sda2 /mnt
+pacstrap /mnt base linux linux-firmware
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+
+ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
+hwclock --systohc
+
+nano /etc/locale.gen # install nano first (pacman -S nano) and then edit /etc/locale.gen (uncomment the locales you need)
+locale-gen
+
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "KEYMAP=uk" > /etc/vconsole.conf
+echo "<your hostname>" > /etc/hostname
+nano /etc/hosts
+    127.0.0.1	localhost
+    ::1 	localhost
+    127.0.1.1	myhostname.localdomain	myhostname
+pacman -S netctl
+
+passwd # set the root passwd
+
+pacman -S grub
+grub-install --target=i386-pc /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+#enable microcodes for Intel CPU
+pacman -S intel-ucode
+CONFIG_BLK_DEV_INITRD=Y
+CONFIG_MICROCODE=y
+CONFIG_MICROCODE_INTEL=Y
+CONFIG_MICROCODE_AMD=y
+grub-mkconfig -o /boot/grub/grub.cfg
+exit # exit chroot environment#
+umount -R /mnt
+shutdown now # or reboot
+# remove installation media
+
+adduser <username> -r -m # -r creates system user, -m creates home dir
+passwd <username>
+pacman -Syu sudo git
