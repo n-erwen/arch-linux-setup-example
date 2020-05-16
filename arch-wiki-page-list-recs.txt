@@ -6,3 +6,4 @@ Xfce
 polkit
 sudo
 pacman
+Xorg

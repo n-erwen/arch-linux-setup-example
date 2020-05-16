@@ -6,7 +6,6 @@ dhcpcd enp0s3 # where enp0s3 is the network interface
 # test the network connection w/ ping command
 
 timedatectl set-ntp true # enable time synchronisation
-timedatectl set-timezone Europe/London
 timedatectl status
 
 fdisk -l
