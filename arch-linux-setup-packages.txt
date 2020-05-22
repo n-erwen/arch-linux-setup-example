@@ -1,0 +1,17 @@
+ESSENTIAL:
+----------
+vim
+nano
+python / python3
+sudo
+systemd (built-in)
+polkit
+git
+xorg
+virtualbox-guest-utils
+
+OTHER:
+------
+lightdm / lightdm-gtk-greeter
+xfce4
+i3
