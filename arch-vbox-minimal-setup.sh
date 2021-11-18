@@ -1,10 +1,27 @@
-loadkeys uk
+#!/bin/zsh
+
+echo "Please enter the desired keyboard mapping from the following keymaps:"
+echo "(Press any key to continue...)"; read -k1 -s
+ls /usr/share/kbd/keymaps/**/*.map.gz | xargs -n1 basename | sed 's/\.map.gz$//' | column -x | less
+read "?(Please enter your desired keymap) >> " KEYMAP
+loadkeys $KEYMAP
+echo "\n\tCurrent key mapping: $KEYMAP\n"
+read -k1 -s "?(Press any key to continue...)"
+
 ls /sys/firmware/efi/efivars # if this does not exist then you are in BIOS mode
 
+echo ""
 ip link # check your network interface is enabled
-dhcpcd enp0s3 # where enp0s3 is the network interface
+echo "(Please enter your network interface out of the ones above.)"
+echo "(It should be labelled BROADCAST)"
+read "?>> " NETWORK_INTERFACE
+dhcpcd $NETWORK_INTERFACE
 # test the network connection w/ ping command
+echo "\nTesting network connection...
+ping -c 10 www.google.com
+read -k1 -s "?(Press any key to continue...)"
 
+echo "\nEnabling time synchronisation..."
 timedatectl set-ntp true # enable time synchronisation
 timedatectl status
 

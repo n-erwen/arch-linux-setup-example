@@ -1,0 +1,10 @@
+:: Arch Linux Setup Script Prerequisites ::
+
+Starting from a clean Arch Linux ISO (preferably downloaded from their website):
+(All commands that need to be entered in the terminal will be prefaced by a $)
+1. Select "Arch Linux install medium (x86_64, BIOS)" from boot screen.
+2. $ pacman -Sy --no-confirm git
+3. $ git clone https://github.com/n-erwen/arch-linux-setup-example.git
+4. $ cd arch-linux-setup-example
+5. $ chmod +x arch-vbox-minimal-setup.sh
+6. $ ./arch-vbox-minimal-setup.sh
